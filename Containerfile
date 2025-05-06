@@ -33,6 +33,11 @@ FROM public.ecr.aws/docker/library/openjdk:17-slim
 # 作業ディレクトリを設定
 WORKDIR /app
 
+# Lambdaアダプターを使用する
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter 
+ENV AWS_LWA_PORT=8080
+ENV AWS_LWA_READINESS_CHECK_PATH=/actuator/health
+
 # ビルドステージから生成されたjarファイルをコピー
 # Gradleの出力パス (build/libs) とファイル名を指定
 # Spring BootのbootJarタスクで生成されるJARファイル名を想定
